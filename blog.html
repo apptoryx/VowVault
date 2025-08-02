@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vow Vault - Blog</title>
+    <style>
+        /* Reuse shared styles */
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; color: #333; }
+        header { background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 10px 20px; position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: #d4a373; }
+        ul { list-style: none; display: flex; gap: 20px; }
+        ul li a { text-decoration: none; color: #333; font-weight: bold; }
+        ul li a:hover { color: #d4a373; }
+        .blog-section { padding: 50px 20px; text-align: center; }
+        .blog-section h1 { color: #d4a373; }
+        .post { margin: 20px; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .post h2 { color: #d4a373; }
+        .cta-button { background-color: #d4a373; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; text-decoration: none; }
+        .cta-button:hover { background-color: #c48a5e; }
+        .cta-button.disabled { background-color: #ccc; cursor: not-allowed; pointer-events: none; }
+        footer { background-color: #333; color: #fff; text-align: center; padding: 20px; }
+        footer a { color: #d4a373; text-decoration: none; }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Vow Vault</div>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="my-vault.html">My Vault</a></li>
+                <li><a href="vendors.html">Vendors</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="blog-section">
+        <h1>Wedding Inspiration Blog</h1>
+        <p>Get tips and ideas for your perfect day.</p>
+        <div class="post">
+            <h2>Top 10 Wedding Trends in 2025</h2>
+            <p>Discover the latest in sustainable and tech-savvy weddings...</p>
+            <a href="#" class="cta-button" id="read-more-1">Read More</a>
+        </div>
+        <div class="post">
+            <h2>Planning a Destination Wedding in UAE</h2>
+            <p>From Dubai beaches to Abu Dhabi luxury...</p>
+            <a href="#" class="cta-button" id="read-more-2">Read More</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Vow Vault. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        // Initialize Firebase with your config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSz09qICZ9Sy73NWJle966eHfnzAOF0h4",
+            authDomain: "vow-vault-72522.firebaseapp.com",
+            projectId: "vow-vault-72522",
+            storageBucket: "vow-vault-72522.firebasestorage.app",
+            messagingSenderId: "937363997566",
+            appId: "1:937363997566:web:e1f92385ee44150a65692f",
+            measurementId: "G-DL4QE2PVK1"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Check authentication status and enable/disable buttons
+        auth.onAuthStateChanged((user) => {
+            const buttons = document.querySelectorAll('.cta-button');
+            if (!user) {
+                buttons.forEach(button => button.classList.add('disabled'));
+            } else {
+                buttons.forEach(button => button.classList.remove('disabled'));
+            }
+        });
+
+        // Logout functionality
+        document.querySelector('a[href="login.html"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                alert('Error logging out: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

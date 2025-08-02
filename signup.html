@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vow Vault - Signup</title>
+    <style>
+        /* Reuse shared styles */
+        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #f8f8f8; color: #333; }
+        header { background-color: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 10px 20px; position: sticky; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: #d4a373; }
+        ul { list-style: none; display: flex; gap: 20px; }
+        ul li a { text-decoration: none; color: #333; font-weight: bold; }
+        ul li a:hover { color: #d4a373; }
+        .auth-section { padding: 50px 20px; text-align: center; max-width: 400px; margin: auto; }
+        .auth-section h1 { color: #d4a373; }
+        form { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        input { display: block; width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #eee; border-radius: 5px; }
+        button { background-color: #d4a373; color: #fff; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+        button:hover { background-color: #c48a5e; }
+        footer { background-color: #333; color: #fff; text-align: center; padding: 20px; }
+        footer a { color: #d4a373; text-decoration: none; }
+    </style>
+    <!-- Use compat UMD versions of Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+    <!-- Remove firestore and storage unless needed for signup -->
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Vow Vault</div>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="my-vault.html">My Vault</a></li>
+                <li><a href="vendors.html">Vendors</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="signup.html">Signup</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="auth-section">
+        <h1>Create Your Account</h1>
+        <form id="signupForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Signup</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Vow Vault. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        // Initialize Firebase with your config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCSz09qICZ9Sy73NWJle966eHfnzAOF0h4",
+            authDomain: "vow-vault-72522.firebaseapp.com",
+            projectId: "vow-vault-72522",
+            storageBucket: "vow-vault-72522.firebasestorage.app",
+            messagingSenderId: "937363997566",
+            appId: "1:937363997566:web:e1f92385ee44150a65692f",
+            measurementId: "G-DL4QE2PVK1"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signup successful
+                    alert('Signup successful! Redirecting to login...');
+                    window.location.href = 'login.html'; // Redirect to login after signup
+                })
+                .catch((error) => {
+                    // Handle errors (e.g., email already in use, weak password)
+                    alert('Error: ' + error.message);
+                });
+        });
+
+        // Redirect if already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                window.location.href = 'my-vault.html'; // Redirect to vault if already logged in
+            }
+        });
+    </script>
+</body>
+</html>
